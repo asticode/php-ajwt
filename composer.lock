@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f217591679a44d8d05e326a0a714938d",
-    "content-hash": "4c23f86806f64526da4a473fadb82055",
+    "hash": "d7d1f644edc297a48eff436bf8f21f63",
+    "content-hash": "f6774af896be4b395ebc4db7de120173",
     "packages": [
         {
             "name": "asticode/php-toolbox",
-            "version": "v1.1.0",
+            "version": "v1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asticode/php-toolbox.git",
-                "reference": "55f30ee22329c2df4fd452e07d0347f1913af62c"
+                "reference": "083962a291b13e79af83dc6e02b67ed80fd1b9c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asticode/php-toolbox/zipball/55f30ee22329c2df4fd452e07d0347f1913af62c",
-                "reference": "55f30ee22329c2df4fd452e07d0347f1913af62c",
+                "url": "https://api.github.com/repos/asticode/php-toolbox/zipball/083962a291b13e79af83dc6e02b67ed80fd1b9c1",
+                "reference": "083962a291b13e79af83dc6e02b67ed80fd1b9c1",
                 "shasum": ""
             },
             "require": {
@@ -54,7 +54,7 @@
                 "shell",
                 "string"
             ],
-            "time": "2016-02-04 13:07:05"
+            "time": "2016-02-21 11:45:25"
         }
     ],
     "packages-dev": [

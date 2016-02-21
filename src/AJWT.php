@@ -6,14 +6,18 @@ use Asticode\AJWT\Exception\InvalidPayloadException;
 use Asticode\AJWT\Exception\InvalidSignatureException;
 use Asticode\Toolbox\ExtendedArray;
 use Asticode\Toolbox\ExtendedString;
+use DateTime;
 
 class AJWT
 {
-    public static function encode(array $aInput, $sKey)
+    public static function encode(array $aInput, $sKey, DateTime $oTimestamp = null, $sNonce = '')
     {
         // Add mandatory information
-        $aInput['timestamp'] = time();
-        $aInput['nonce'] = ExtendedString::random(24);
+        if (is_null($oTimestamp)) {
+            $oTimestamp = new DateTime();
+        }
+        $aInput['timestamp'] = $oTimestamp->getTimestamp();
+        $aInput['nonce'] = empty($sNonce) ? ExtendedString::random(24) : $sNonce;
 
         // Build payload
         $sPayload = static::buildPayload($aInput);
@@ -31,18 +35,39 @@ class AJWT
     
     private static function buildPayload(array $aInput)
     {
-        return json_encode(
+        // Build payload
+        $sPayload = json_encode(
             $aInput,
             JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES
         );
+
+        // Payload is invalid
+        if (!$sPayload) {
+            throw new InvalidInputException('Unencodable input');
+        }
+
+        // Return
+        return $sPayload;
     }
 
     private static function unbuildPayload($sInput)
     {
-        return json_decode(
+        // Unbuild payload
+        $aPayload = json_decode(
             $sInput,
             true
         );
+
+        // Payload is invalid
+        if (is_null($aPayload)) {
+            throw new InvalidInputException(sprintf(
+                'Malformed JSON <%s>',
+                $sInput
+            ));
+        }
+
+        // Return
+        return $aPayload;
     }
     
     private static function signPayload($sPayload, $sKey)
@@ -55,7 +80,7 @@ class AJWT
         );
     }
 
-    public static function decode($sInput, $sKey, array $aRequiredKeys, $iValidityDuration = 0)
+    public static function decode($sInput, $sKey, array $aRequiredKeys = [], $iValidityDuration = 0)
     {
         // Split input
         $aExplodedInput = explode('.', $sInput);
